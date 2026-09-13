@@ -1,0 +1,15 @@
+# Arduino build output
+build/
+*.bin
+*.elf
+*.map
+
+# tools
+__pycache__/
+*.pyc
+tools/preview_*.png
+
+# editors / OS
+.vscode/
+.DS_Store
+Thumbs.db
