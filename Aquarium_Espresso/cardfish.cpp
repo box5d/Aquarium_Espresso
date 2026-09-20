@@ -177,7 +177,6 @@ bool cardLoad() {
     sdSPI.end();
     return false;
   }
-#endif
 
   File f = SD.open(CARD_FILE, FILE_READ);
   if (!f) {
@@ -236,4 +235,5 @@ bool cardLoad() {
     Serial.printf("card: %s is in the tank\n", CARD_FILE);
   }
   return ok;
+#endif
 }
