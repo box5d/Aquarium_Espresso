@@ -166,6 +166,10 @@ static bool reduceToSprite(const uint8_t* src, uint32_t sw, uint32_t sh) {
 }
 
 bool cardLoad() {
+#if defined(ARDUINO_M5STACK_CORES3) || defined(BOARD_M5STACK_CORES3)
+  Serial.println("card: SD check skipped on M5CoreS3");
+  return false;
+#else
   static SPIClass sdSPI(HSPI);
   sdSPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
   if (!SD.begin(SD_CS, sdSPI, SD_FREQ)) {
@@ -173,6 +177,7 @@ bool cardLoad() {
     sdSPI.end();
     return false;
   }
+#endif
 
   File f = SD.open(CARD_FILE, FILE_READ);
   if (!f) {
