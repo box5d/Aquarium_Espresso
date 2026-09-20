@@ -6,6 +6,11 @@
 //   SCLK 12 / MOSI 11 / DC 9 / CS 10 / RST -- (tie to 3V3 or set PIN_TFT_RST)
 // Panel options: BGR order + inversion on, as on the other ST7789 boards here.
 // ---------------------------------------------------------------------------
+#if defined(ARDUINO_M5STACK_CORES3) || defined(BOARD_M5STACK_CORES3)
+#define LGFX_AUTODETECT
+#include <LovyanGFX.hpp>
+#define PIN_TFT_BLK -1
+#else
 #define LGFX_USE_V1
 #include <LovyanGFX.hpp>
 
@@ -63,5 +68,6 @@ public:
         setPanel(&_panel);
     }
 };
+#endif
 
 #endif // PIXAQ_LGFX_SETUP_H

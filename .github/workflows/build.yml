@@ -1,0 +1,38 @@
+name: Build M5CoreS3 Firmware
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+
+      - name: Install ESP32 Platform & LovyanGFX
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+          arduino-cli lib install LovyanGFX
+
+      - name: Compile Aquarium_Espresso for M5CoreS3
+        run: |
+          mkdir -p output
+          arduino-cli compile \
+            --fqbn esp32:esp32:m5stack_cores3:FlashSize=16M,PSRAM=opi,PartitionScheme=huge_app \
+            --output-dir output \
+            Aquarium_Espresso
+
+      - name: Upload Firmware Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: m5cores3-firmware
+          path: output/
